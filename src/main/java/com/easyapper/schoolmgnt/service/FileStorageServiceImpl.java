@@ -79,6 +79,11 @@ public class FileStorageServiceImpl implements FileStorageService {
         lists.forEach(fileUploadDetail ->{
            Set<Student> std = MultipartFileUploadUtils.parseExcelToObject(fileUploadDetail);
            std.forEach(st->{customerRepository.save(new Customers(st));});
+            Optional<FileUploadDetail> byId = fileUploadRepository.findById(fileUploadDetail.getId());
+            FileUploadDetail fileUploadDetail1 = byId.get();
+            fileUploadDetail1.setCompleted(true);
+            fileUploadRepository.save(fileUploadDetail);
+
         });
     }
 
